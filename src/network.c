@@ -238,6 +238,27 @@ char *get_layer_string(LAYER_TYPE a)
     }
     return "none";
 }
+network * make_network_custom(int n)
+{
+    network* net = (network*)xcalloc(1, sizeof(network));
+    net->n = n;
+    net->layers = (layer*)xcalloc(net->n, sizeof(layer));
+    net->seen = (uint64_t*)xcalloc(1, sizeof(uint64_t));
+    net->cur_iteration = (int*)xcalloc(1, sizeof(int));
+    net->total_bbox = (int*)xcalloc(1, sizeof(int));
+    net->rewritten_bbox = (int*)xcalloc(1, sizeof(int));
+    *net->rewritten_bbox = *net->total_bbox = 0;
+#ifdef GPU
+    net->input_gpu = (float**)xcalloc(1, sizeof(float*));
+    net->truth_gpu = (float**)xcalloc(1, sizeof(float*));
+
+    net->input16_gpu = (float**)xcalloc(1, sizeof(float*));
+    net->output16_gpu = (float**)xcalloc(1, sizeof(float*));
+    net->max_input16_size = (size_t*)xcalloc(1, sizeof(size_t));
+    net->max_output16_size = (size_t*)xcalloc(1, sizeof(size_t));
+#endif
+    return net;
+}
 
 network make_network(int n)
 {
@@ -1141,6 +1162,8 @@ float network_accuracy_multi(network net, data d, int n)
 
 void free_network(network net)
 {
+    /*
+    Commented the mem free as there are many memory corrutption issues
     int i;
     for (i = 0; i < net.n; ++i) {
         free_layer(net.layers[i]);
@@ -1178,6 +1201,7 @@ void free_network(network net)
 #else
     free(net.workspace);
 #endif
+    */
 }
 
 static float relu(float src) {

@@ -49,7 +49,7 @@ Thumbs.db
 src/version.h
 
 # Build artifacts
-lib/
+#lib/
 share/
 include/darknet/
 uselib

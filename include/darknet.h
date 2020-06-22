@@ -518,7 +518,7 @@ struct layer {
 
     size_t workspace_size;
 
-//#ifdef GPU
+#ifdef GPU
     int *indexes_gpu;
 
     float *z_gpu;
@@ -651,7 +651,7 @@ struct layer {
     UNUSED_ENUM_TYPE bf_algo, bf_algo16;
     void* poolingDesc;
 #endif  // CUDNN
-//#endif  // GPU
+#endif  // GPU
 };
 
 
